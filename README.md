@@ -29,3 +29,24 @@ __Configurando Pacote__
 * Para habilitar o tenancy no laravel vá em confing/app.php no array de 'providers'=>[ após RouterServiceProvider];
 
         App\Providers\TenancyServiceProvider::class
+
+__Adequando Models__
+
+* Gerar os Models 
+
+        sail artisan make:model Tenant
+        sail artisan make:model Domain
+
+> Pode mover use Stancl\Tenancy\Database\Models\Tenant; de config/tenancy.php para app/Models/Tenant.php.
+> Pode Remover use Illuminate\Database\Eloquent\Model;
+
+        Stancl\Tenancy\Database\Models\Tenant as BeseTenant;
+
+> Pode mover use Stancl\Tenancy\Database\Models\Domain; de config/tenancy.php para app/Models/Domain.php.
+> Pode Remover use Illuminate\Database\Eloquent\Model;
+
+        Stancl\Tenancy\Database\Models\Domain as BeseDomain;
+
+> Em config/tenancy.php deve fazer a importação do model
+
+    use App\Models\{Tenant, Domain}
