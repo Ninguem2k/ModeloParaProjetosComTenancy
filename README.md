@@ -2,7 +2,7 @@
 
 __Iniciando Projeto__
 
-* Insatalando o Sail + Laravel + Mysql + Redis
+* Insatalando o Laravel usando Sail + Mysql + Redis
 
     curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 
@@ -11,5 +11,8 @@ __Iniciando Projeto__
 * Confingurar o Sail e subir o container
 
     cd example-app
+
     alias sail="./vendor/bin/sail up"
+
     sail ip -d
+
