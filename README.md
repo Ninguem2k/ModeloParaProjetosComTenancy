@@ -89,3 +89,7 @@ __Adequando Domínios Centrais__
         {
             return config('tenancy.central_domains');
         }
+
+__Criando Migrações Tenant__
+
+        sail artisan make:migration create_*NAME*s_table --path=database/migrations/tenant
