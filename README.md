@@ -90,6 +90,40 @@ __Adequando Domínios Centrais__
             return config('tenancy.central_domains');
         }
 
+__Corrigindo app/Models/Tenant.php__
+
+* O comando já esta pronto até mesmo para gerar o usuario root
+
+        namespace App\Models;
+
+        use Illuminate\Database\Eloquent\Factories\HasFactory;
+        use Stancl\Tenancy\Database\Models\Tenant as TenantBase;
+        use Stancl\Tenancy\Contracts\TenantWithDatabase;
+        use Stancl\Tenancy\Database\Concerns\HasDatabase;
+        use Stancl\Tenancy\Database\Concerns\HasDomains;
+
+        class Tenant extends TenantBase implements TenantWithDatabase
+        {
+                use HasFactory, HasDatabase, HasDomains;
+                
+                protected static function booted()
+                {
+                    static::creating(function($tenant){
+                        $tenant->password = bcrypt($tenant->password);
+                        $tenant->role = 'ROLE_ADMIN';
+                    });
+                }
+        }'
+
+
 __Criando Migrações Tenant__
 
+* O comando gerar uma migration em database/migrations/tenant
+
         sail artisan make:migration create_*NAME*s_table --path=database/migrations/tenant
+
+* Rodar as migrations no banco de dados Principal
+
+        sail artisan migrate
+
+* Rodar as migrations no banco de dados dos inquilinos
