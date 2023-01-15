@@ -16,3 +16,16 @@ __Iniciando Projeto__
 
     sail ip -d
 
+__Configurando Pacote__
+
+* Para baixar o pacote tenacy
+
+    sail composer require stancl/tenancy
+
+* Instalar o pacote tenacy no projeto
+
+    sail artisan tenancy:install
+
+* Para habilitar o tenancy no laravel vá em confing/app.php no array de 'providers'=>[ após RouterServiceProvider ];
+
+  App\Providers\TenancyServiceProvider::class
