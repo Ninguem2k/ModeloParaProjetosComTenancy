@@ -26,4 +26,13 @@ Route::middleware([
     Route::get('/', function () {
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
+
+    Route::get('/photo/{path}', function ($path) {
+        $image = str_replace('|','/', $path);
+        $path = storage_path('app/public/'.$image);
+
+        $mimeType = \Illuminate\Support\Facades\File::mimeType($path);
+
+        return response(file_get_contents($path))->header('Content-Type',$mimeType);
+    })->name('server.image');
 });

@@ -127,3 +127,62 @@ __Criando Migrações Tenant__
         sail artisan migrate
 
 * Rodar as migrations no banco de dados dos inquilinos
+
+        sail artisan tenants:migrate
+
+__Pasta Storage em Inquilino_
+
+* Gerar Jobs para gerar Pasta Storage para cada Inquilino 
+
+        sail artisan make:job CreateFrameworkDirectoriesForTenant
+
+* Adicione no job criado
+
+        namespace App\Jobs;
+
+        use App\Models\Tenant;
+
+        class CreateFrameworkDirectoriesForTenant implements ShouldQueue{
+                protected $tenant;
+
+                public function __construct(Tenant $tenant)
+                {
+                        $this->tenant = $tenant;
+                }
+
+                public function handle()
+                {
+                        $this->tenant->run(function ($tenant) {
+                        $storage_path = storage_path();
+
+                        mkdir("$storage_path/framework/cache", 0777, true);
+                        });
+                }
+        }
+
+> Logo a seguir após criação do job basta adicionar na lista de execurção
+
+* Inporte o Job em App\Providers\TenancyServiceProvider.php
+
+        use App\jobs\{CreateRootUserTenant, CreateFrameworkDirectoriesForTenant};
+
+* E insira o comando em jobPipeline antes de CreateRootUserTenant::class,
+
+        CreateFrameworkDirectoriesForTenant::class,
+
+__Exibir aquivos de inquilinos da pasta publica__
+
+* Deve ser capturdo em uma rota exemplo imagem vá em routes/tenant.php e adicione 
+
+Route::middleware([
+***
+])->group(function () {
+        Route::get('/photo/{path}', function ($path) {
+            $image = str_replace('|','/', $path);
+            $path = storage_path('app/public/'.$image);
+
+            $mimeType = \Illuminate\Support\Facades\File::mimeType($path);
+
+            return response(file_get_contents($path))->header('Content-Type',$mimeType);
+        })->name('server.image');
+});
