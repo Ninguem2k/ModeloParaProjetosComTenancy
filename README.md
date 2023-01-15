@@ -130,7 +130,7 @@ __Criando Migrações Tenant__
 
         sail artisan tenants:migrate
 
-__Pasta Storage em Inquilino_
+__Pasta Storage em Inquilino__
 
 * Gerar Jobs para gerar Pasta Storage para cada Inquilino 
 
@@ -176,6 +176,7 @@ __Exibir aquivos de inquilinos da pasta publica__
 
 Route::middleware([
 ])->group(function () {
+
         Route::get('/photo/{path}', function ($path) {
             $image = str_replace('|','/', $path);
             $path = storage_path('app/public/'.$image);
@@ -184,4 +185,5 @@ Route::middleware([
 
             return response(file_get_contents($path))->header('Content-Type',$mimeType);
         })->name('server.image');
+        
 });
