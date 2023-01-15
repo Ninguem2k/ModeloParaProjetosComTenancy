@@ -175,7 +175,6 @@ __Exibir aquivos de inquilinos da pasta publica__
 * Deve ser capturdo em uma rota exemplo imagem vá em routes/tenant.php e adicione 
 
 Route::middleware([
-***
 ])->group(function () {
         Route::get('/photo/{path}', function ($path) {
             $image = str_replace('|','/', $path);
